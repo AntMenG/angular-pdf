@@ -10,9 +10,10 @@ import html2canvas from 'html2canvas';
 export class AppComponent {
   title = 'angular-pdf';
 
-  captureScreen() {
+  async captureScreen(): Promise<void> {
     const data = document.getElementById('contentToConvert');
-    html2canvas(data).then(canvas => {
+    try {
+      const canvas = await html2canvas(data);
       const imgData = canvas.toDataURL('image/png');
       const imgWidth = 210;
       const pageHeight = 295;
@@ -32,6 +33,8 @@ export class AppComponent {
         heightLeft -= pageHeight;
       }
       doc.save('doc.pdf');
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
